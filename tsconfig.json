@@ -1,0 +1,15 @@
+{
+	"compilerOptions": {
+		"module": "commonjs",
+		"target": "es5",
+		"noImplicitAny": false,
+		"sourceMap": true,
+		"declaration": true,
+		"outDir": "dist",
+		"rootDirs": ["src", "node_modules"],
+		"jsx": "react",
+		"lib": ["dom", "es2015"]
+	},
+	"exclude": ["node_modules", "dist"],
+	"files": ["src/main.ts"]
+}

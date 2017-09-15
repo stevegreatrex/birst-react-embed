@@ -1,0 +1,25 @@
+{
+	"name": "birst-react-embed",
+	"version": "0.1.0",
+	"main": "index.ts",
+	"types": "index.d.ts",
+	"description": "Embed React-generated content in Birst dashboards",
+	"scripts": {
+		"build": "tsc"
+	},
+	"keywords": [
+		"birst",
+		"react"
+	],
+	"author": "@stevegreatrex",
+	"license": "ISC",
+	"devDependencies": {
+		"@types/react": "^16.0.5",
+		"@types/react-dom": "^15.5.4",
+		"typescript": "^2.5.2"
+	},
+	"dependencies": {
+		"react": "^15.6.1",
+		"react-dom": "^15.6.1"
+	}
+}
