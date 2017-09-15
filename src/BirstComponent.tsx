@@ -33,8 +33,8 @@ export function connectToBirst<TInnerProps>(query: IBqlQuery<TInnerProps>) {
 				this.setState({loading: true, error: null});
 
 				try {
-					const rawQueryData = await bqlApi.executeQuery(query.bql);
-					const queryResults = query.mapResultsToProps(rawQueryData);
+					const queryResults = await bqlApi.executeQuery(query);
+
 					this.setState({
 						loading: false,
 						queryResults
