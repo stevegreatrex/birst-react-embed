@@ -7,10 +7,14 @@
 	"scripts": {
 		"build": "tsc"
 	},
-	"keywords": [
-		"birst",
-		"react"
-	],
+	"keywords": ["birst", "react"],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/stevegreatrex/birst-react-embed"
+	},
+	"bugs": {
+		"url": "https://github.com/stevegreatrex/birst-react-embed/issues"
+	},
 	"author": "@stevegreatrex",
 	"license": "ISC",
 	"devDependencies": {
