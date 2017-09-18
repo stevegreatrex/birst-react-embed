@@ -61,6 +61,7 @@ In your Birst dashboard, add an HTML widget and insert the following snippet:
 
 ```html
 <div data-birst-content></div>
+<script src="/js/birst_embed.js"></script>
 <script src="https://my-server.com/birst/content.js"></script>
 ```
 
