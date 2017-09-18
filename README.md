@@ -4,32 +4,24 @@ Embed React-generated content in a Birst dashboard and pass BQL query results to
 ## Why does this library exist
 Birst dashboards allow you to embed rich HTML & JS content but the mechanism doesn't allow much in the way of engineering practices and the developer story is pretty painful.  
 
-😭 All code must be entered into an unformatted text box
-
-😭 Any shared code must be copy/pasted between spaces
-
-😭 No way to source control the results (besides copy/pasting in & out of another editor)
+* 😭 All code must be entered into an unformatted text box
+* 😭 Any shared code must be copy/pasted between spaces
+* 😭 No way to source control the results (besides copy/pasting in & out of another editor)
 
 This library is a proof of concept for hosting the custom content externally, allowing the developer to manage deployment, hosting & engineering practices properly whilst still working within Birst.
 
 ## Why React?
 Birst dashboards already pull in both Angular & jQuery as dependencies so "why add React?" is a valid question.  There's no slam dunk reason to go with React (and some alternatives are suggested below) but here is some of the thought process behind the decision.
 
-💡 Combines all resources into a single package to minimise additional network requests
-  
-💡 `connectToBirst` & higher-order components abstract complexity of BQL queries nicely
+* 💡 Combines all resources into a single package to minimise additional network requests
+* 💡 `connectToBirst` & higher-order components abstract complexity of BQL queries nicely
+* 💡 Hot-module reloading significantly improves developer experience
+* 💡 Pretty basic hosting requirements for generated resources (i.e. static file hosting)
+* 💡 Type safety for Birst results & component development
 
-💡 Hot-module reloading significantly improves developer experience
-
-💡 Pretty basic hosting requirements for generated resources (i.e. static file hosting)
-
-💡 Type safety for Birst results & component development
-
-🤔 One more library, and not a tiny one either.  @ ~ 150KB React is definitely extra weight
-
-🤔 At least one more network request
-
-🤔 One more technology to learn (depending on background)
+* 🤔 One more library, and not a tiny one either.  @ ~ 150KB React is definitely extra weight
+* 🤔 At least one more network request
+* 🤔 One more technology to learn (depending on background)
 
 ## Mitigation
 The issue of increased network requests & JS size is the most significant here, though it's worth stating that Birst dashboards are already fairly bloated (~4MB JS & ~70 requests for a single-widget dashboard) so the net effect is likely minimal.
