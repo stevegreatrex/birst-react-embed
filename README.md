@@ -18,7 +18,6 @@ Birst dashboards already pull in both Angular & jQuery as dependencies so "why a
 * 💡 Hot-module reloading significantly improves developer experience
 * 💡 Pretty basic hosting requirements for generated resources (i.e. static file hosting)
 * 💡 Type safety for Birst results & component development
-
 * 🤔 One more library, and not a tiny one either.  @ ~ 150KB React is definitely extra weight
 * 🤔 At least one more network request
 * 🤔 One more technology to learn (depending on background)
