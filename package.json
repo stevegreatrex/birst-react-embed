@@ -1,13 +1,16 @@
 {
 	"name": "birst-react-embed",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"main": "index.ts",
 	"types": "index.d.ts",
 	"description": "Embed React-generated content in Birst dashboards",
 	"scripts": {
 		"build": "tsc"
 	},
-	"keywords": ["birst", "react"],
+	"keywords": [
+		"birst",
+		"react"
+	],
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/stevegreatrex/birst-react-embed"
