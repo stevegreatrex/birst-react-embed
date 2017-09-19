@@ -60,12 +60,16 @@ To embed the content in a Birst dashboard you'll need to host the generated code
 In your Birst dashboard, add an HTML widget and insert the following snippet:
 
 ```html
-<div data-birst-content></div>
+<div data-birst-content>
+	<span style="color: #999; text-align: center; width: 100%; margin: 20">Loading...</span>
+</div>
 <script src="/js/birst_embed.js"></script>
 <script src="https://my-server.com/birst/content.js"></script>
 ```
 
 That's it! 🎉
+
+> Note: the `Loading...` span will be replaced once the JS package has been downloaded and has started loading
 
 ## BQL Integration
 Custom HTML content on it's own is not that useful; normally you'll want some content sourced from Birst itself.
