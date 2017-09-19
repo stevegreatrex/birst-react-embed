@@ -71,6 +71,23 @@ That's it! 🎉
 
 > Note: the `Loading...` span will be replaced once the JS package has been downloaded and has started loading
 
+## Parmeters
+Ideally we'd like to reuse any components we create and the likelihood is that they'll need at least _some_ parameters.
+
+These can be serialized into the value of the `data-birst-content` attribute and will be passed to the factory function within `embedInBirst`.
+
+```html
+<div data-birst-content='{ "message": "hello, world" }'>
+</div>
+```
+
+```typescript
+embedInBirst(parameters => {
+	// parameters == { message: 'hello, world' }
+	return <h1>{parameters.message}</h1>;
+})
+```
+
 ## BQL Integration
 Custom HTML content on it's own is not that useful; normally you'll want some content sourced from Birst itself.
 
