@@ -1,27 +1,29 @@
 import * as React from 'react';
-import {ReactChildren} from 'react';
-import {render} from 'react-dom';
-import {Embed} from './Embed';
-import {IEmbedProps} from './Embed';
+import { ReactChildren } from 'react';
+import { render } from 'react-dom';
+import { EmbedContainer } from './EmbedContainer';
 
 const attributeName = 'data-birst-content';
 
-export type EmbeddedElementFactory = (parameters: any) => JSX.Element;
+export function attachElement<TParams>(
+	createEmbeddedElement: (params: TParams) => JSX.Element
+) {
+	return (element: HTMLElement) => {
+		const serializedParameters = element.getAttribute(attributeName);
+		const parameters: TParams = serializedParameters
+			? JSON.parse(serializedParameters)
+			: {};
 
-const attachElement = (createEmbeddedElement: EmbeddedElementFactory) => (
-	element: HTMLElement
-) => {
-	const parameters: IEmbedProps = JSON.parse(
-		element.getAttribute(attributeName) || '{}'
-	);
-	element.style.overflowX = 'hidden';
-	render(
-		<Embed {...parameters}>{createEmbeddedElement(parameters)}</Embed>,
-		element
-	);
-};
+		render(
+			<EmbedContainer>{createEmbeddedElement(parameters)}</EmbedContainer>,
+			element
+		);
+	};
+}
 
-export function embedInBirst(createEmbeddedElement: EmbeddedElementFactory) {
+export function embedInBirst<TParams>(
+	createEmbeddedElement: (params: TParams) => JSX.Element
+) {
 	Array.from(document.querySelectorAll(`[${attributeName}]`)).forEach(
 		attachElement(createEmbeddedElement)
 	);

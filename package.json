@@ -5,12 +5,12 @@
 	"types": "index.d.ts",
 	"description": "Embed React-generated content in Birst dashboards",
 	"scripts": {
-		"build": "tsc"
+		"build": "node_modules/.bin/tsc",
+		"build:dev": "node_modules/.bin/tsc --watch",
+		"test": "node_modules/.bin/jest",
+		"test:watch": "node_modules/.bin/jest --watch"
 	},
-	"keywords": [
-		"birst",
-		"react"
-	],
+	"keywords": ["birst", "react"],
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/stevegreatrex/birst-react-embed"
@@ -21,12 +21,29 @@
 	"author": "@stevegreatrex",
 	"license": "ISC",
 	"devDependencies": {
+		"@types/enzyme": "^2.8.7",
+		"@types/jest": "^20.0.8",
 		"@types/react": "^16.0.5",
 		"@types/react-dom": "^15.5.4",
+		"enzyme": "^2.9.1",
+		"enzyme-to-json": "^2.0.0",
+		"jest": "^21.1.0",
+		"jest-cli": "^21.1.0",
+		"react-test-renderer": "^15.6.1",
+		"ts-jest": "^21.0.1",
 		"typescript": "^2.5.2"
 	},
 	"dependencies": {
 		"react": "^15.6.1",
 		"react-dom": "^15.6.1"
+	},
+	"jest": {
+		"transform": {
+			"^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+		},
+		"testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(tsx?)$",
+		"moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json"],
+		"unmockedModulePathPatterns": ["node_modules/react/", "node_modules/enzyme/"],
+		"snapshotSerializers": ["<rootDir>/node_modules/enzyme-to-json/serializer"]
 	}
 }

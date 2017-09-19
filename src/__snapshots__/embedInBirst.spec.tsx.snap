@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`attachElement passes parsed props into component 1`] = `
+<div
+  data-birst-content="{ \\"id\\": \\"test\\" }"
+>
+  <div
+    data-reactroot=""
+    style="display: flex; font-family: Segoe UI, Tahoma, Geneva, Verdana, sans-serif; overflow-x: hidden;"
+  >
+    <div
+      id="test"
+    />
+  </div>
+</div>
+`;
+
+exports[`attachElement renders into target element 1`] = `
+<div>
+  <div
+    data-reactroot=""
+    style="display: flex; font-family: Segoe UI, Tahoma, Geneva, Verdana, sans-serif; overflow-x: hidden;"
+  >
+    <div
+      id="content"
+    />
+  </div>
+</div>
+`;
