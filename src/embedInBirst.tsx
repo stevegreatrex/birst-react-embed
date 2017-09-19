@@ -5,14 +5,19 @@ import { EmbedContainer } from './EmbedContainer';
 
 const attributeName = 'data-birst-content';
 
-function attachElement<TParams>(createEmbeddedElement: (params: TParams) => JSX.Element) {
+export function attachElement<TParams>(
+	createEmbeddedElement: (params: TParams) => JSX.Element
+) {
 	return (element: HTMLElement) => {
 		const serializedParameters = element.getAttribute(attributeName);
 		const parameters: TParams = serializedParameters
 			? JSON.parse(serializedParameters)
 			: {};
 
-		render(<EmbedContainer>{createEmbeddedElement(parameters)}</EmbedContainer>, element);
+		render(
+			<EmbedContainer>{createEmbeddedElement(parameters)}</EmbedContainer>,
+			element
+		);
 	};
 }
 
