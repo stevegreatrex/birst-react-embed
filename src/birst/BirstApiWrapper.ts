@@ -1,5 +1,5 @@
 import { IBqlResults } from './IBqlResults';
-import { ManualPromise } from './ManualPromise';
+import { ManualPromise } from '../ManualPromise';
 
 interface IBirstCallbackParameters {
 	data: {
