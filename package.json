@@ -1,6 +1,6 @@
 {
 	"name": "birst-react-embed",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"main": "index.ts",
 	"types": "index.d.ts",
 	"description": "Embed React-generated content in Birst dashboards",
@@ -19,7 +19,7 @@
 		"url": "https://github.com/stevegreatrex/birst-react-embed/issues"
 	},
 	"author": "@stevegreatrex",
-	"license": "ISC",
+	"license": "MIT",
 	"devDependencies": {
 		"@types/enzyme": "^2.8.7",
 		"@types/jest": "^20.0.8",
@@ -43,7 +43,10 @@
 		},
 		"testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(tsx?)$",
 		"moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json"],
-		"unmockedModulePathPatterns": ["node_modules/react/", "node_modules/enzyme/"],
+		"unmockedModulePathPatterns": [
+			"node_modules/react/",
+			"node_modules/enzyme/"
+		],
 		"snapshotSerializers": ["<rootDir>/node_modules/enzyme-to-json/serializer"]
 	}
 }
