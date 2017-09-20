@@ -61,7 +61,7 @@ In your Birst dashboard, add an HTML widget and insert the following snippet:
 
 ```html
 <div data-birst-content>
-	<span style="color: #999; text-align: center; width: 100%; margin: 20">Loading...</span>
+  <span style="color: #999; text-align: center; width: 100%; margin: 20">Loading...</span>
 </div>
 <script src="/js/birst_embed.js"></script>
 <script src="https://my-server.com/birst/content.js"></script>
@@ -71,7 +71,7 @@ That's it! 🎉
 
 > Note: the `Loading...` span will be replaced once the JS package has been downloaded and has started loading
 
-## Parmeters
+## Component Parameters
 Ideally we'd like to reuse any components we create and the likelihood is that they'll need at least _some_ parameters.
 
 These can be serialized into the value of the `data-birst-content` attribute and will be passed to the factory function within `embedInBirst`.
@@ -83,8 +83,8 @@ These can be serialized into the value of the `data-birst-content` attribute and
 
 ```typescript
 embedInBirst(parameters => {
-	// parameters == { message: 'hello, world' }
-	return <h1>{parameters.message}</h1>;
+  // parameters == { message: 'hello, world' }
+  return <h1>{parameters.message}</h1>;
 })
 ```
 
@@ -104,7 +104,7 @@ import * as React from 'react';
 import {connectToBirst, IBqlQuery} from 'birst-react-embed';
 
 interface MyComponentProps {
-	message: string;
+  message: string;
 }
 
 const MyComponent = (props: MyComponentProps) => <h1>Hello, { message }</h1>;
@@ -126,11 +126,9 @@ This creates a component that, once mounted, will load the results of the BQL qu
 
 ```typescript
 export const definition: IBqlQuery<IClientsTableProps> = {
-	bql: 'SELECT USING OUTER JOIN...',
-
-	sampleResultsUrl: '/sample-query-response.json',
-
-	mapResultsToProps: (results: IBqlResults) => ...
+  bql: 'SELECT USING OUTER JOIN...',
+  sampleResultsUrl: '/sample-query-response.json',
+  mapResultsToProps: (results: IBqlResults) => ...
 };
 ```
 
