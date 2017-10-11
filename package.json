@@ -43,10 +43,13 @@
 		},
 		"testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(tsx?)$",
 		"moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json"],
-		"unmockedModulePathPatterns": [
-			"node_modules/react/",
-			"node_modules/enzyme/"
-		],
+		"unmockedModulePathPatterns": ["node_modules/react/", "node_modules/enzyme/"],
 		"snapshotSerializers": ["<rootDir>/node_modules/enzyme-to-json/serializer"]
+	},
+	"prettier": {
+		"useTabs": true,
+		"singleQuote": true,
+		"printWidth": 90,
+		"jsxBracketSameLine": true
 	}
 }
