@@ -1,25 +1,41 @@
 import * as React from 'react';
 import { IBqlQuery } from './birst/IBqlQuery';
 import { IBqlResults } from './birst/IBqlResults';
-import { connectToBirst, LoadingPlaceholder, ErrorPlaceholder } from './BirstComponent';
+import {
+	connectToBirst,
+	LoadingPlaceholder,
+	ErrorPlaceholder
+} from './BirstComponent';
 import { instance as bqlApi } from './birst/BqlApi';
 import { shallow, mount, render } from 'enzyme';
 import { ManualPromise } from './ManualPromise';
 import { waitForNextFrame } from './delay';
+import { IDrillDown } from './birst/IDrillDown';
+import { BirstApiWrapper } from './birst/BirstApiWrapper';
+
+//todo: better mocking of BirstApiWrapper
+window['BirstConfig'] = { callBack: function() {} };
+const applyDrillDown = jest.spyOn(BirstApiWrapper.instance, 'applyDrillDown');
 
 const executeQuery = jest.spyOn(bqlApi, 'executeQuery');
 
 describe('connectToBirst', () => {
 	type PropsFromQuery = {
-		fromQuery?: string;
+		fromQuery: string;
 	};
 
 	type CombinedProps = PropsFromQuery & {
 		fromProps?: string;
+		applyDrillDown(drillDown: IDrillDown);
+	};
+
+	const drillDownDefinition: IDrillDown = {
+		collection: 'collection',
+		dashboard: 'dashboard'
 	};
 
 	const Component = (props: CombinedProps) => (
-		<div>
+		<div onClick={() => props.applyDrillDown(drillDownDefinition)}>
 			<span>{props.fromQuery}</span>
 			<span>{props.fromProps}</span>
 		</div>
@@ -81,5 +97,19 @@ describe('connectToBirst', () => {
 		expect(wrapper.find(ErrorPlaceholder).exists()).toBe(true);
 		expect(wrapper.find(ErrorPlaceholder).props().error).toEqual('oh no!');
 		done();
+	});
+
+	it('should pass applyDrillDown function to inner component', async () => {
+		const apiResponse = new ManualPromise<PropsFromQuery>();
+		apiResponse.resolve({ fromQuery: 'success' });
+		executeQuery.mockReturnValue(apiResponse);
+
+		const wrapper = mount(<ConnectedComponent />);
+		await waitForNextFrame();
+
+		wrapper.find('div').simulate('click');
+		expect(applyDrillDown.mock.calls.length).toBe(1);
+		const drillDownArgs = applyDrillDown.mock.calls[0][0];
+		expect(drillDownArgs).toEqual(drillDownDefinition);
 	});
 });

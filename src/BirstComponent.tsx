@@ -2,17 +2,24 @@ import * as React from 'react';
 import { Component, ComponentClass, ComponentType } from 'react';
 import { IBqlResults } from './birst/IBqlResults';
 import { instance as bqlApi } from './birst/BqlApi';
+import { BirstApiWrapper } from './birst/BirstApiWrapper';
 import { IBqlQuery } from './birst/IBqlQuery';
+import { IDrillDown } from './birst/IDrillDown';
 
 // Diff / Omit taken from https://github.com/Microsoft/TypeScript/issues/12215#issuecomment-311923766
 type Diff<T extends string, U extends string> = ({ [P in T]: P } &
 	{ [P in U]: never } & { [x: string]: never })[T];
 type Omit<T, K extends keyof T> = Pick<T, Diff<keyof T, K>>;
 
-export function connectToBirst<TMappedResultProps>(query: IBqlQuery<TMappedResultProps>) {
-	function createBirstComponent<TCombinedProps extends TMappedResultProps>(
+export function connectToBirst<TMappedResultProps>(
+	query: IBqlQuery<TMappedResultProps>
+) {
+	type InjectedProps = TMappedResultProps & {
+		applyDrillDown(drillDown: IDrillDown);
+	};
+	function createBirstComponent<TCombinedProps extends InjectedProps>(
 		WrappedComponent: ComponentType<TCombinedProps>
-	): ComponentClass<Omit<TCombinedProps, keyof TMappedResultProps>> {
+	): ComponentClass<Omit<TCombinedProps, keyof InjectedProps>> {
 		interface IBirstComponentState {
 			queryResults: TMappedResultProps | null;
 			loading: boolean;
@@ -27,7 +34,10 @@ export function connectToBirst<TMappedResultProps>(query: IBqlQuery<TMappedResul
 			Omit<TCombinedProps, keyof TMappedResultProps>,
 			IBirstComponentState
 		> {
-			constructor(props: Omit<TCombinedProps, keyof TMappedResultProps>, context?: any) {
+			constructor(
+				props: Omit<TCombinedProps, keyof TMappedResultProps>,
+				context?: any
+			) {
 				super(props);
 				this.state = {
 					loading: false,
@@ -57,11 +67,22 @@ export function connectToBirst<TMappedResultProps>(query: IBqlQuery<TMappedResul
 
 			render() {
 				if (this.state.queryResults)
-					return <WrappedComponent {...this.state.queryResults} {...this.props} />;
+					return (
+						<WrappedComponent
+							{...this.state.queryResults}
+							applyDrillDown={this.applyDrillDown}
+							{...this.props}
+						/>
+					);
 
-				if (this.state.error) return <ErrorPlaceholder error={this.state.error} />;
+				if (this.state.error)
+					return <ErrorPlaceholder error={this.state.error} />;
 
 				return <LoadingPlaceholder />;
+			}
+
+			private applyDrillDown(drillDown: IDrillDown) {
+				BirstApiWrapper.instance.applyDrillDown(drillDown);
 			}
 		}
 
@@ -78,7 +99,8 @@ export const LoadingPlaceholder = () => (
 			textAlign: 'center',
 			width: '100%',
 			margin: 20
-		}}>
+		}}
+	>
 		Loading...
 	</span>
 );
@@ -92,7 +114,8 @@ export const ErrorPlaceholder = (props: { error: any }) => (
 			margin: 10,
 			padding: 10,
 			background: '#fdeaea'
-		}}>
+		}}
+	>
 		{`${props.error}`}
 	</span>
 );
