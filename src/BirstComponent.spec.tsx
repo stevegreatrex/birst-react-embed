@@ -1,11 +1,7 @@
 import * as React from 'react';
 import { IBqlQuery } from './birst/IBqlQuery';
 import { IBqlResults } from './birst/IBqlResults';
-import {
-	connectToBirst,
-	LoadingPlaceholder,
-	ErrorPlaceholder
-} from './BirstComponent';
+import { connectToBirst, LoadingPlaceholder, ErrorPlaceholder } from './BirstComponent';
 import { instance as bqlApi } from './birst/BqlApi';
 import { shallow, mount, render } from 'enzyme';
 import { ManualPromise } from './ManualPromise';
@@ -13,11 +9,11 @@ import { waitForNextFrame } from './delay';
 import { IDrillDown } from './birst/IDrillDown';
 import { BirstApiWrapper } from './birst/BirstApiWrapper';
 
-//todo: better mocking of BirstApiWrapper
-window['BirstConfig'] = { callBack: function() {} };
-const applyDrillDown = jest.spyOn(BirstApiWrapper.instance, 'applyDrillDown');
-
 const executeQuery = jest.spyOn(bqlApi, 'executeQuery');
+const applyDrillDown = jest.fn();
+Object.defineProperty(BirstApiWrapper, 'instance', {
+	value: { applyDrillDown }
+});
 
 describe('connectToBirst', () => {
 	type PropsFromQuery = {
