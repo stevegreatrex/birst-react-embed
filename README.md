@@ -53,18 +53,62 @@ const HelloWorld = () => <h1>Hello, Birst</h1>;
 
 embedInBirst(() => <HelloWorld />);
 ```
+## Local Development and Debugging
+Working on a project within a Birst dashboard itself is a pretty horrendous experience.  I recommend using `webpack-dev-server` with hot reloading for the majority of development and then give it a final test in Birst before shipping!  You can even combine `webpack-dev-server` with `ngrok` to host your local dev content in a Birst dashboard directly.
 
-## Plugging into Birst
-To embed the content in a Birst dashboard you'll need to host the generated code somewhere.  Let's assume you have used something like `webpack` to generate a single bundle hosted at `https://my-server.com/birst/content.js`.
+To test and develop locally just start up `webpack-dev-server` (`Ctrl+Shift+B` if you're using VSCode). This will serve the content to the specified port on local host. By default this is `http://localhost:3000/index.html`.
+
+Navigate to the `index.html` page for the selected component (example: `localhost:3000/src/my-component/my-component.html`). Webpack will automatically rebuild any changes made to the TSX or HTML for that component.
+
+> Note: If you are running locally _without_ ngrok (i.e. not embedded within Birst) then you don't have access to the Birst API. To improve the dev experience, whenever `process.env.NODE_ENV !== 'production'` this library will replace the _real_ BQL API with a mock one that will use `fetch` to resolve the `sampleResponseUrl` for your defined query. It will error with `Unexpected Token at position x` if you try and host locally without a valid `sample.json`.
+
+## Hosting with Ngrok
+To test in Birst you'll need to host the generated code somewhere. Let's assume you have used something like `webpack` to generate a single bundle using dev-server, you can use [ngrok](https://ngrok.com/) to quickly forward the local port that dev-server is running on.
+
+An example ngrok command: `ngrok http -host-header=rewrite 3000` (Host-header rewrite is required).
+
+This will give you a random publicly facing url that is serving your content. If you are using `webpack-dev-server` with `ngrok`, you can make changes and it will rebuild and update the content on ngrok without you having to do anything else 🎉!
+
+Now you have your content being served publicly, but to actually test with birst data you need to embed it in a valid Birst dashboard. See: `Embedding in Birst` 
+
+## Hosting with Netlify
+If you wish to test a production build or use a hosting solution with custom DNS and auto-deploy, then one option would be to use [netlify](https://www.netlify.com/). Simply setup an account with netlify and add a new site pointing to your github repo and the specific branch. Assuming you have `webpack -p` configured as the `build` script in `package.json` in netlify simply set the launch command to `npm run build`. Once this is setup it should serve the content at a random url `netlify-url-1000.netlify.com` and you can use this to embed in a dashboard.
+
+## Embedding in Birst
+> Note: This section assumes you have a publicly hosted js file and that any birst data you are referencing in your React components already exist in the current dashboard.
+
+The BQL and theme Parameters are now passed in with the HTML widget, using the following structure:
+
+```javascript
+interface IRequiredExternalParameters {
+    query: {
+        bql: string;
+        columns: string[];
+    };
+    drillDown?: IProfileGridParameters['drillDown'];
+    theme?: ITheme;
+}
+```
 
 In your Birst dashboard, add an HTML widget and insert the following snippet:
 
 ```html
-<div data-birst-content>
-  <span style="color: #999; text-align: center; width: 100%; margin: 20">Loading...</span>
-</div>
-<script src="/js/birst_embed.js"></script>
-<script src="https://my-server.com/birst/content.js"></script>
+<script src="/js/birst_embed.js">
+	<script>
+		// Set parameters for widget.  Could be included in HTML attribute
+		document.querySelector('[data-birst-content]').setAttribute('data-birst-content', JSON.stringify({
+			query: {
+				bql: 'SELECT TOP 100 USING OUTER JOIN [Sport Profile.Player Id] \'COL0\', [Sport Profile.Full Name] \'COL1\' FROM [ALL] WHERE ( ( [Group.Group Name]=\'2017-2018 Roster\' ) ) ',
+				columns: ['id', 'fullName']
+			},
+			theme: {
+				primaryColor: '#008348',
+				logoUrl: 'http:yourlogo.com/logo.png',
+				fallbackPlayerImageUrl: 'http://cdn.bleacherreport.net/images/team_logos/328x328/nba.png',
+			}
+		}));
+	</script>
+</script>
 ```
 
 That's it! 🎉
@@ -131,8 +175,3 @@ export const definition: IBqlQuery<IClientsTableProps> = {
   mapResultsToProps: (results: IBqlResults) => ...
 };
 ```
-
-## Debug Mode
-Working on a project within a Birst dashboard itself is a pretty horrendous experience.  I recommend using `webpack-dev-server` with hot reloading for the majority of development and then give it a final test in Birst before shipping!  You can even combine `webpack-dev-server` with `ngrok` to host your local dev content in a Birst dashboard directly.
-
-If you are running locally _without_ ngrok (i.e. not embedded within Birst) then  you don't have access to the Birst API.  To improve the dev experience, whenever `process.env.NODE_ENV !== 'production'` this library will replace the _real_ BQL API with a mock one that will use `fetch` to resolve the `sampleResponseUrl` for your defined query.
